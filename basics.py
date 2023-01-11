@@ -27,3 +27,7 @@ introduction_doc = nlp(
 
 print(f"Tokens : {[token.text for token in introduction_doc]}")
 
+# Identify sentences
+sentences = list(introduction_doc.sents)
+print(f"Number of sentences : {len(sentences)}")
+print(f"The sentences are : \n {[sentence for sentence in sentences]}")
