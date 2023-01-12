@@ -31,3 +31,25 @@ print(f"Tokens : {[token.text for token in introduction_doc]}")
 sentences = list(introduction_doc.sents)
 print(f"Number of sentences : {len(sentences)}")
 print(f"The sentences are : \n {[sentence for sentence in sentences]}")
+
+# Custom sentence seperators
+ellipsis_text = (
+    "Gus, can you, ... never mind, I forgot"
+    " what I was saying. So, do you think"
+    " we should ..."
+)
+from spacy.language import Language
+@Language.component("set_custom_boundaries")
+def set_custom_boundaries(doc):
+    """Add support to use `...` as a delimiter for sentence detection"""
+    for token in doc[:-1]:
+        if token.text == "...":
+            doc[token.i + 1].is_sent_start = True
+    return doc
+
+custom_nlp = spacy.load("en_core_web_sm")
+custom_nlp.add_pipe("set_custom_boundaries", before="parser")
+custom_ellipsis_doc = custom_nlp(ellipsis_text)
+custom_ellipsis_sentences = list(custom_ellipsis_doc.sents)
+for sentence in custom_ellipsis_sentences:
+    print(sentence)
