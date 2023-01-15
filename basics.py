@@ -65,3 +65,19 @@ about_doc = nlp(about_text)
 
 for token in about_doc:
     print (token, token.idx)
+
+# Atributes
+print(
+    f"{'Text with Whitespace':22}"
+    f"{'Is Alphanumeric?':15}"
+    f"{'Is Punctuation?':18}"
+    f"{'Is Stop Word?'}"
+)
+
+for token in about_doc:
+    print(
+        f"{str(token.text_with_ws):22}" 
+        f"{str(token.is_alpha):15}" 
+        f"{str(token.is_punct):18}" 
+        f"{str(token.is_stop)}" 
+    )
