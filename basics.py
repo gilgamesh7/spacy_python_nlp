@@ -81,3 +81,37 @@ for token in about_doc:
         f"{str(token.is_punct):18}" 
         f"{str(token.is_stop)}" 
     )
+
+# Default tokensiation
+custom_about_text = (
+    "Gus Proto is a Python developer currently"
+    " working for a London@based Fintech"
+    " company. He is interested in learning"
+    " Natural Language Processing."
+)
+
+print([token.text for token in nlp(custom_about_text)])
+# Custom token
+import re
+from spacy.tokenizer import Tokenizer
+custom_nlp = spacy.load("en_core_web_sm")
+prefix_re = spacy.util.compile_prefix_regex(
+    custom_nlp.Defaults.prefixes
+)
+suffix_re = spacy.util.compile_suffix_regex(
+    custom_nlp.Defaults.suffixes
+)
+custom_infixes = [r"@"]
+infix_re = spacy.util.compile_infix_regex(
+    list(custom_nlp.Defaults.infixes) + custom_infixes
+)
+custom_nlp.tokenizer = Tokenizer(
+    nlp.vocab,
+    prefix_search=prefix_re.search,
+    suffix_search=suffix_re.search,
+    infix_finditer=infix_re.finditer,
+    token_match=None,
+)
+custom_tokenizer_about_doc = custom_nlp(custom_about_text)
+print([token.text for token in custom_tokenizer_about_doc[8:15]])
+
