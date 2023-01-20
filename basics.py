@@ -115,3 +115,8 @@ custom_nlp.tokenizer = Tokenizer(
 custom_tokenizer_about_doc = custom_nlp(custom_about_text)
 print([token.text for token in custom_tokenizer_about_doc[8:15]])
 
+# Stop words
+spacy_stopwords = spacy.lang.en.stop_words.STOP_WORDS
+print(f"Printing 10 out of {len(list(spacy_stopwords))} stop words : ")
+for stop_word in list(spacy_stopwords)[:10]:
+    print(stop_word)
