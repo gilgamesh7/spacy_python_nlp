@@ -120,3 +120,22 @@ spacy_stopwords = spacy.lang.en.stop_words.STOP_WORDS
 print(f"Printing 10 out of {len(list(spacy_stopwords))} stop words : ")
 for stop_word in list(spacy_stopwords)[:10]:
     print(stop_word)
+
+# Lemmatization is the process of reducing inflected forms of a word 
+# while still ensuring that the reduced form belongs to the language. 
+# This reduced form, or root word, is called a lemma.
+print("\n Lemmatization : ")
+conference_help_text = (
+    "Gus is helping organize a developer"
+    " conference on Applications of Natural Language"
+    " Processing. He keeps organizing local Python meetups"
+    " and several internal talks at his workplace."
+)
+conference_help_doc = nlp(conference_help_text)
+print("Print all lemmas : ")
+for token in conference_help_doc:
+    print(str(token.lemma_))
+print("Print tokens tht have been lemmatized : ")
+for token in conference_help_doc:
+    if str(token) != str(token.lemma_):
+        print(f"{str(token):>20} : {str(token.lemma_)}")
