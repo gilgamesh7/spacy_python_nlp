@@ -181,3 +181,39 @@ words = [
 ]
 
 print(f"WITHOUT     removing stop words & punctuations : \n {Counter(words).most_common(5)}")
+
+# Part of Speech Tagging
+# There are typically eight parts of speech:
+# Noun
+# Pronoun
+# Adjective
+# Verb
+# Adverb
+# Preposition
+# Conjunction
+# Interjection
+about_text = (
+    "Gus Proto is a Python developer currently"
+    " working for a London-based Fintech"
+    " company. He is interested in learning"
+    " Natural Language Processing."
+)
+about_doc = nlp(about_text)
+for token in about_doc:
+    print(
+        f"""
+TOKEN: {str(token)}
+=====
+TAG: {str(token.tag_)} POS: {token.pos_}
+EXPLANATION: {spacy.explain(token.tag_)}"""
+    )
+
+nouns = []
+adjectives = []
+for token in about_doc:
+    if token.pos_ == "NOUN":
+        nouns.append(token)
+    if token.pos_ == "ADJ":
+        adjectives.append(token)
+print(f"Nouns : {nouns}")
+print(f"Adjectives : {adjectives}")
