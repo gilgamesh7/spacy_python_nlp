@@ -312,3 +312,40 @@ def extract_phone_number(nlp_doc):
 conference_org_doc = nlp(conference_org_text)
 # extract_phone_number(conference_org_doc)
 
+# Shallow Parsing - Noun Phrase Detection
+conference_text = (
+    "There is a developer conference happening on 21 July 2019 in London."
+)
+conference_doc = nlp(conference_text)
+
+print("Noun phrases : ")
+for chunk in conference_doc.noun_chunks:
+    print(chunk)
+
+# Shallow Parsing - Verb Phrase Detect
+import textacy
+about_talk_text = (
+    "The talk will introduce reader about use"
+    " cases of Natural Language Processing in"
+    " Fintech, making use of"
+    " interesting examples along the way."
+)
+
+patterns = [{"POS": "AUX"}, {"POS": "VERB"}]
+about_talk_doc = textacy.make_spacy_doc(
+    about_talk_text, lang="en_core_web_sm"
+)
+verb_phrases = textacy.extract.token_matches(
+    about_talk_doc, patterns=patterns
+)
+
+print("All verb phrases : ")
+for chunk in verb_phrases:
+    print(chunk.text)
+
+print("noun phrase to explain what nouns are involved : ")
+for chunk in about_talk_doc.noun_chunks:
+    print (chunk)
+
+
+
