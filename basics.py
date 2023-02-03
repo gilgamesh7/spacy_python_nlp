@@ -260,3 +260,54 @@ complete_filtered_tokens = [
 ]
 
 print(f"Preprocessed Tokens : {complete_filtered_tokens}")
+
+# Rule based matching
+about_text = (
+    "Gus Proto is a Python developer currently"
+    " working for a London-based Fintech"
+    " company. He is interested in learning"
+    " Natural Language Processing."
+    "Rajesh Babu dight for another proper noun "
+)
+about_doc = nlp(about_text)
+
+from spacy.matcher import Matcher
+matcher = Matcher(nlp.vocab)
+
+def extract_full_name(nlp_doc):
+    pattern = [{"POS": "PROPN"}, {"POS": "PROPN"}]
+    matcher.add("FULL_NAME", [pattern])
+    matches = matcher(nlp_doc)
+
+    for _, start, end in matches:
+        span = nlp_doc[start:end]
+        yield span.text
+
+print(next(extract_full_name(about_doc)))
+
+# Extract phone number
+conference_org_text = ("There is a developer conference"
+    " happening on 21 July 2019 in London. It is titled"
+    ' "Applications of Natural Language Processing".'
+    " There is a helpline number available"
+    " at (123) 456-7891")
+
+
+def extract_phone_number(nlp_doc):
+    pattern = [
+        {"ORTH": "("},
+        {"SHAPE": "ddd"},
+        {"ORTH": ")"},
+        {"SHAPE": "ddd"},
+        {"ORTH": "-", "OP": "?"},
+        {"SHAPE": "dddd"},
+    ]
+    matcher.add("PHONE_NUMBER", None, pattern)
+    matches = matcher(nlp_doc)
+    for match_id, start, end in matches:
+        span = nlp_doc[start:end]
+        return span.text
+
+
+conference_org_doc = nlp(conference_org_text)
+# extract_phone_number(conference_org_doc)
