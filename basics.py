@@ -347,5 +347,29 @@ print("noun phrase to explain what nouns are involved : ")
 for chunk in about_talk_doc.noun_chunks:
     print (chunk)
 
+# Using NER to redact names
+survey_text = (
+    "Out of 5 people surveyed, James Robert,"
+    " Julie Fuller and Benjamin Brooks like"
+    " apples. Kelly Cox and Matthew Evans"
+    " like oranges."
+)
+
+def replace_person_names(token):
+    if token.ent_iob != 0 and token.ent_type_ == "PERSON":
+        return "[REDACTED] "
+    return token.text_with_ws
+
+def redact_names(nlp_doc):
+    with nlp_doc.retokenize() as retokenizer:
+        for ent in nlp_doc.ents:
+            retokenizer.merge(ent)
+    tokens = map(replace_person_names, nlp_doc)
+    return "".join(tokens)
+
+print(f"Original Text :\n {survey_text}")
+survey_doc = nlp(survey_text)
+print(f"Redacted Text : \n {redact_names(survey_doc)}")
+
 
 
