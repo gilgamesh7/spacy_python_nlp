@@ -8,3 +8,6 @@
 - create venv
 - install spacy
 - python -m spacy download en_core_web_sm (to install english language model)
+
+# Notes
+- for displaycy.serve on MacOS , use "localhost" instead of "0.0.0.0"
